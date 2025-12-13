@@ -47,10 +47,10 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://lmri-met.github.io/metpyir/"
-Repository = "https://github.com/lmri-met/metpyir"
-Documentation = "https://lmri-met.github.io/metpyir/"
-Issues = "https://github.com/lmri-met/metpyir/issues"
+Homepage = "https://xandratxan.github.io/template-library/"
+Repository = "https://github.com/xandratxan/template-library"
+Documentation = "https://xandratxan.github.io/template-library/"
+Issues = "https://github.com/xandratxan/template-library/issues"
 
 [project.optional-dependencies]
 dev = [

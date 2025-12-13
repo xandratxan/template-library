@@ -1,0 +1,18 @@
+# Minimum viable requirements.txt
+# List only runtime dependencies here.
+# Leave empty if your package has no external runtime requirements.
+#
+# For development and testing tools (pytest, linters, formatters), use
+# dev-requirements.txt or your project's dev dependency section in pyproject.toml.
+# To install runtime requirements:
+# python -m pip install -r requirements.txt
+#
+# Examples (uncomment and adapt as needed):
+# pandas>=2.3.3,<3
+# numpy>=2.3.5,<3
+# scipy>=1.16.3,<2
+
+# Examples (uncomment and adapt as needed):
+pandas>=2.3.3,<3
+numpy>=2.3.5,<3
+scipy>=1.16.3,<2

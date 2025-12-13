@@ -1,0 +1,30 @@
+# Minimum viable dev-requirements.txt
+# Development tools for the project. These are separate from
+# runtime dependencies in `requirements.txt`.
+#
+# Install with:
+#   python -m pip install -r dev-requirements.txt
+#
+# Notes:
+# - Versions use conservative ranges to avoid accidental major upgrades.
+# - Add or remove tools to match your workflow.
+#
+# Examples of tools to include:
+# - linters (flake8, pylint)
+# - formatters (black, isort)
+# - testing frameworks (pytest, tox)
+# - documentation generators (sphinx)
+# - packaging tools (hatch, setuptools)
+
+# Testing frameworks
+pytest~=9.0.2
+pytest-cov~=7.0.0
+
+# Documentation generation
+sphinx~=8.2.3
+sphinx-multiversion~=0.2.4
+sphinx_design~=0.6.1
+pydata_sphinx_theme~=0.16.1
+
+# Packaging and distribution
+hatch~=1.16.2

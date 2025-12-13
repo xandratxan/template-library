@@ -1,0 +1,67 @@
+# Minimal pyproject.toml using Hatch (hatchling) and the src/ layout
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+exclude = ["docs/*", "tests/*", "requirements*.txt"]
+
+[[tool.hatch.build.packages]]
+include = ["template_library"]
+from = "src"
+
+[project]
+name = "template-library"
+version = "0.0.1"
+description = "A template repository for a Python library"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "BSD-3-Clause"
+authors = [{ name = "Xandra Campo", email = "xandra.campo@ciemat.es" }]
+maintainers = [{ name = "Xandra Campo", email = "xandra.campo@ciemat.es" }]
+dependencies = [
+    "pandas>=2.3.3,<3.0.0",
+    "numpy>=2.3.5,<3.0.0",
+    "scipy>=1.16.3,<2.0.0",
+]
+keywords = [
+    # Domain/Core
+    "ionizing", "radiation", "metrology", "nuclear", "physics", "science",
+    # General/Python
+    "python", "library", "scientific", "toolkit",
+]
+classifiers = [
+    # Development Status & License & OS
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    # Python Version Support
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    # Audience & Topics
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Measurement",
+]
+
+[project.urls]
+Homepage = "https://lmri-met.github.io/metpyir/"
+Repository = "https://github.com/lmri-met/metpyir"
+Documentation = "https://lmri-met.github.io/metpyir/"
+Issues = "https://github.com/lmri-met/metpyir/issues"
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest~=9.0.2",
+    "pytest-cov~=7.0.0",
+    # Documentation
+    "sphinx~=8.2.3",
+    "sphinx-multiversion~=0.2.4",
+    "sphinx_design~=0.6.1",
+    "pydata_sphinx_theme~=0.16.1",
+    # Packaging
+    "hatch~=1.16.2",
+]

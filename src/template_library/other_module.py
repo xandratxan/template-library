@@ -17,6 +17,11 @@ class UtilityManager:
 
     This class is often used internally by primary classes in the library.
 
+    Parameters
+    ----------
+    multiplier : float, optional
+        A factor to apply in calculations (default is 1.0).
+
     Attributes
     ----------
     multiplier : float
@@ -26,11 +31,6 @@ class UtilityManager:
     def __init__(self, multiplier: float = 1.0):
         """
         Initializes the Utility Manager.
-
-        Parameters
-        ----------
-        multiplier : float, optional
-            A factor to apply in calculations (default is 1.0).
         """
         self.multiplier = multiplier
 

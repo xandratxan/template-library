@@ -3,6 +3,14 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+import os
+import sys
+
+# Configuration for finding your package source code (Crucial for `src` layout)
+DOCS_SOURCE_DIR = os.path.dirname(__file__) # Absolute path to conf.py directory
+PROJECT_ROOT = os.path.abspath(os.path.join(DOCS_SOURCE_DIR, '..', '..')) # Absolute path to project root
+sys.path.insert(0, os.path.join(PROJECT_ROOT, 'src')) # Add the 'src' directory to sys.path
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -17,10 +25,15 @@ release = '0.0.1'
 extensions = [
     "pydata_sphinx_theme",
     "sphinx_design",
+    "sphinx.ext.autosummary",
+    "numpydoc",
 ]
 
 templates_path = ['_templates']
 exclude_patterns = []
+
+autosummary_generate = True
+
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

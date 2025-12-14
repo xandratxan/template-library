@@ -22,9 +22,10 @@ pytest-cov~=7.0.0
 
 # Documentation generation
 sphinx~=8.2.3
-sphinx-multiversion~=0.2.4
 sphinx_design~=0.6.1
 pydata_sphinx_theme~=0.16.1
+numpydoc~=2.3.5
+sphinx-multiversion~=0.2.4
 
 # Packaging and distribution
 hatch~=1.16.2

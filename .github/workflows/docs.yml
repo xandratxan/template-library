@@ -1,0 +1,101 @@
+# GitHub Actions workflow to build and deploy Sphinx documentation to GitHub Pages.
+name: docs.yml
+
+on:
+  # Trigger the workflow on pushes to the main branch
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read  # Allow reading repo contents
+  pages: write    # Allow publishing to GitHub Pages
+  id-token: write # Allow OIDC token issuance for deployments
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+    steps:
+      # Checks out the repository so the workflow can access files
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # fetch full history and all tags
+
+      # Installs the requested Python version (uses latest 3.x available)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Upgrades pip and installs Sphinx and other docs dependencies from `docs/requirements.txt`
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r docs/requirements.txt
+
+      # The command to build multiversion docs -a -E for full rebuild from scratch -D smv_outputdir=./_build/html: essential for output path
+      - name: Build Multiversion Documentation
+        run: sphinx-multiversion docs/source docs/_build/html
+
+      # Post-process the built HTML to create version switcher and redirect to latest
+      - name: Post-process switcher and redirect
+        run: |
+          python - <<'PY'
+          import os, json, re, shutil, pathlib
+          
+          out = pathlib.Path('docs/_build/html')
+          site_url = 'https://xandratxan.github.io/template-library'.rstrip('/')
+          
+          def ver_key(name):
+              nums = re.findall(r'\d+', name)
+              return tuple(int(x) for x in nums)
+          
+          pattern = re.compile(r'^v(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)$')
+          candidates = [p for p in out.iterdir() if p.is_dir() and pattern.match(p.name)]
+          versions = [{"name": p.name, "url": f"/{p.name}/"} for p in sorted(candidates, key=lambda p: ver_key(p.name), reverse=True)]
+          print("Release versions", versions)
+          
+          if not candidates:
+              print("No versioned directories found; aborting post-processing.")
+              raise SystemExit(0)
+          
+          chosen = sorted(candidates, key=lambda p: ver_key(p.name), reverse=True)[0]
+          chosen_name = chosen.name
+          print("Chosen latest version:", chosen_name)
+          
+          # copy chosen version to latest
+          dst_latest = out / "latest"
+          if dst_latest.exists():
+              shutil.rmtree(dst_latest)
+          shutil.copytree(chosen, dst_latest)
+          print("Copied", chosen, "to", dst_latest)
+          
+          (dst_latest / "_static").mkdir(parents=True, exist_ok=True)
+          (dst_latest / "_static" / "switcher.json").write_text(json.dumps(versions, indent=2), encoding="utf-8")
+          out.joinpath("switcher.json").write_text(json.dumps(versions, indent=2), encoding="utf-8")
+          print("Wrote switcher.json and latest/_static/switcher.json with", len(versions), "entries")
+          
+          index_html = f"""<!DOCTYPE html>
+          <html>
+            <head>
+              <title>Redirecting to latest version</title>
+              <meta charset="utf-8">
+              <meta http-equiv="refresh" content="0; url=./latest/index.html">
+              <link rel="canonical" href="{site_url}/latest/index.html">
+            </head>
+          </html>
+          """
+          (out / "index.html").write_text(index_html, encoding="utf-8")
+          print("Wrote index.html redirecting to latest version")
+          PY
+      # Packages the built HTML and uploads it for Pages deployment
+      - name: Upload Artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _build/html
+
+      # Deploys the uploaded artifact to GitHub Pages using the Pages permission
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

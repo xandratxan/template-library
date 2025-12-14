@@ -1,0 +1,7 @@
+# Requirements for building the documentation
+
+sphinx~=8.2.3  # For sphinx-design compatibility
+sphinx_design~=0.6.1  # Requieres sphinx<9
+pydata_sphinx_theme~=0.16.1
+numpydoc~=1.10.0
+sphinx-multiversion~=0.2.4

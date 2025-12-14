@@ -17,7 +17,8 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'src'))  # Add the 'src' directory
 project = 'TemplateLibrary'
 copyright = '2025, Xandra Campo'
 author = 'Xandra Campo'
-release = 'v0.0.2'
+release = f'v0.0.4'
+rst_epilog = f'.. |project_release| replace:: v{release}'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

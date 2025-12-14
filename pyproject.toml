@@ -13,7 +13,7 @@ from = "src"
 
 [project]
 name = "template-library"
-version = "0.0.1"
+version = "v0.0.4"
 description = "A template repository for a Python library"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -62,6 +62,7 @@ dev = [
     "sphinx-multiversion~=0.2.4",
     "sphinx_design~=0.6.1",
     "pydata_sphinx_theme~=0.16.1",
+    "numpydoc~=2.3.5",
     # Packaging
     "hatch~=1.16.2",
 ]

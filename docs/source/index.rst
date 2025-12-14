@@ -3,7 +3,7 @@
 TemplateLibrary
 ===============
 
-**Version**: 0.0.4rc1
+**Version**: v0.0.4
 
 **Useful links**:
 `Install <https://pypi.org/project/template-library/>`_ |

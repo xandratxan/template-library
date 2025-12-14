@@ -46,9 +46,10 @@ smv_remote_whitelist = r'^origin$'
 
 html_theme = 'pydata_sphinx_theme'
 html_static_path = ['_static']
-html_baseurl = "https://xandratxan.github.io/template-library/"
+# html_baseurl = "https://xandratxan.github.io/template-library/"
+html_baseurl = "http://0.0.0.0:8000/"
 
-_json_path = "latest/_static/switcher.json"
+_json_path = "switcher.json"
 json_url = urljoin(html_baseurl, _json_path)
 
 html_title = f'{project}'

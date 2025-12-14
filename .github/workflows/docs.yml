@@ -2,13 +2,10 @@
 name: docs.yml
 
 on:
-  # Trigger the workflow on new GitHub Release creation
+  # Trigger the workflow on new GitHub Release creation and manual dispatch
   release:
     types: [ created ]
-  # Also trigger on pushes to the main branch (for testing purposes)
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: read  # Allow reading repo contents

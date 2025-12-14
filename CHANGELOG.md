@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * [Describe any new features added since the last release]
+* docs(readme): add docs build badge to README.md
+* ci(docs): add `workflow_dispatch` trigger to `docs.yml`
 
 ### Changed
 
@@ -22,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 * [Describe any removed features since the last release]
+* ci(docs): remove push to main trigger to `docs.yml`
+
 
 ### Fixed
 

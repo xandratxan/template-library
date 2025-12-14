@@ -5,6 +5,7 @@
 ---
 
 [![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](https://github.com/xandratxan/template-library/blob/main/LICENSE)
+[![Docs build](https://github.com/xandratxan/template-library/actions/workflows/docs.yml/badge.svg)](https://github.com/xandratxan/template-library/actions/workflows/docs.yml)
 
 ---
 

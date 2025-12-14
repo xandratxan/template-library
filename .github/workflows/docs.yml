@@ -53,7 +53,7 @@ jobs:
           
           pattern = re.compile(r'^v(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)$')
           candidates = [p for p in out.iterdir() if p.is_dir() and pattern.match(p.name)]
-          versions = [{"name": p.name, "url": f"/{p.name}/"} for p in sorted(candidates, key=lambda p: ver_key(p.name), reverse=True)]
+          versions = [{"name": p.name, "url": f"{site_url}/{p.name}/"} for p in sorted(candidates, key=lambda p: ver_key(p.name), reverse=True)]
           print("Release versions", versions)
           
           if not candidates:

@@ -37,6 +37,10 @@ exclude_patterns = []
 
 autosummary_generate = True
 
+smv_branch_whitelist = None
+smv_tag_whitelist = r'^v[0-9]+\.[0-9]+\.[0-9]+$'
+smv_remote_whitelist = r'^origin$'
+
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 

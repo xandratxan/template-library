@@ -364,35 +364,39 @@ needing to add commits.
 
 ## Setting the whitelist of branches/tags to build
 
-Regarding this:  
+Regarding whitelists:
 
---whitelist-rx: default is empty (no whitelist) — i.e., sphinx-multiversion will consider all refs (branches/tags) unless you pass a whitelist/blacklist pattern.  
+By default, sphinx-multiversion builds all branches and tags, unless you pass a whitelist/blacklist pattern.
 
-I want to use this mainly for publish the docs of versions publised in PyPI, So, which branches/tags should I include?
+I want to use this mainly for publish the docs of versions published in PyPI. So, which branches/tags should I include?
 
-Include the tags that exactly correspond to the releases you publish on PyPI, plus one branch for the live/latest docs (typically `main` or `stable`). Common choices and their regexes:
+Include the tags that exactly correspond to the releases you publish on PyPI, plus one branch for the live/latest docs
+(typically `main` or `stable`). Common choices and their regexes:
 
-- `main` + `v`\-prefixed semver (flexible): matches `v1`, `v1.2`, `v1.2.3`  
-- `main` + strict `vX.Y.Z` semver: only full releases like `v1.2.3` (excludes pre\-releases/partials) (RECOMMENDED)  
+- `main` + `v`\-prefixed semver (flexible): matches `v1`, `v1.2`, `v1.2.3`
+- `main` + strict `vX.Y.Z` semver: only full releases like `v1.2.3` (excludes pre\-releases/partials) (RECOMMENDED)
 - `main` + numeric tags (no `v` prefix): if your tags are `1.2.3`
 
-Brief explanation of the example commands below: each runs a multiversion build but limits refs using a different whitelist regex. Pick the regex that matches your tag style.
+Why should I include main? I do not want to be public until a new version is released, right?
 
-```bash
-# bash
-# 1) Flexible v-prefixed semver + main (common)
-sphinx-multiversion docs docs/_build/html --whitelist-rx '^(main|v[0-9]+(\.[0-9]+)*)$'
+Short answer: include main only if you want a continuously published "latest / unreleased" site. If you must keep docs
+private until a release, exclude main and build/publish only on release tags.
+Why include main?
 
-# 2) Strict vX.Y.Z semver + main (only full releases, RECOMMENDED)
-sphinx-multiversion docs docs/_build/html --whitelist-rx '^(main|v[0-9]+\.[0-9]+\.[0-9]+)$'
+- Provides a public, always-up-to-date "latest" or "nightly" docs for contributors and reviewers.
+- Lets you test the full multiversion pipeline (switcher, theme, search) against unreleased changes.
+- Helpful for QA before cutting a release.
 
-# 3) Numeric tags without 'v' + main (if your PyPI tags are like 1.2.3)
-sphinx-multiversion docs docs/_build/html --whitelist-rx '^(main|[0-9]+(\.[0-9]+)*)$'
-```
+**Note about tagging:**
+
+- For release versions, use `vX.Y.Z` for release tags (e.g., `v1.0.0`, `v2.1.3`).
+- For development versions, use pre-release tags like `v1.2.0-beta`, `v2.0.0-rc1`, or branches like `main` or `develop`.
+- Whitelist only release tags.
 
 ```python
 # TODO: configure whitelists in conf.py
 ```
+
 # How to integrate sphinx-multiversion with PyData Sphinx Theme?
 
 Summary (short)
@@ -471,6 +475,6 @@ Notes (short)
 - Set `html_baseurl` to your Pages root so canonical links are correct.
 - Publish the enti
 
+# Redirecting output tree to GitHub Pages?
 
-# Redirectig output tree to GitHub Pages?
 # Setting a latest alias?

@@ -515,10 +515,64 @@ Use CI to write a small redirect and (optionally) maintain a `latest` alias auto
 - Robust: detect the newest `v*` folder in `docs/_build/html`, copy it to `latest/`, then emit `index.html` pointing to
   `./latest/` (works well with `peaceiris/actions-gh-pages`).
 
-I want this option:  
+I want this option:
 
-Robust: detect the newest v* folder in docs/_build/html, copy it to latest/, then emit index.html pointing to ./latest/ (works well with peaceiris/actions-gh-pages).  
+Robust: detect the newest v* folder in docs/_build/html, copy it to latest/, then emit index.html pointing to
+./latest/ (works well with peaceiris/actions-gh-pages).
 
 how should I modify my build_serve_multiversion_docs.sh to do this?
 
+# When this workflow should run?
 
+I have a GitHub Actions workflow to build and deploy Sphinx documentation to GitHub Pages.
+I want it to publish the documentation associated to the different versions of the project published on PyPI.
+I use strict semver to identify release tags.
+When should this workflow trigger?
+
+This is a common and robust pattern\! Given your use of **strict semantic versioning (semver)** for releases, the ideal
+time to trigger your documentation build and deployment workflow is **when a new release is created on GitHub**.
+
+When you create a GitHub Release, you typically associate it with a corresponding Git tag (e.g., `v1.0.0`, `v2.1.3`).
+This Git tag is what should contain the documentation source files for that specific version.
+
+### 🚀 Recommended GitHub Actions Trigger
+
+You should configure your workflow to trigger on the **`release`** event, specifically when a release is **`created`**.
+
+```yaml
+# .github/workflows/deploy-docs.yml
+name: Build and Deploy Docs
+
+on:
+  release:
+    types: [ created ] # This triggers the workflow only when a new release is published
+
+jobs:
+  build-and-deploy-docs:
+    runs-on: ubuntu-latest
+    # ... rest of your job definition
+```
+
+-----
+
+### 💡 Why this trigger works best
+
+1. **Direct Mapping to Version:** A GitHub Release, backed by a semver tag, is the definitive source of truth for a new
+   project version. Triggering on this event directly links your documentation build to the exact code state of the
+   release.
+
+    * The Git reference for the workflow run will automatically be set to the release tag (e.g., `refs/tags/v1.2.3`).
+
+2. **Guaranteed PyPI Consistency (If Publishing is Integrated):** In most modern Python CI/CD pipelines, the act of *
+   *creating a GitHub Release** is *also* the trigger that publishes the corresponding package to PyPI (often using
+   actions like `pypa/gh-action-pypi-publish`).
+
+    * This ensures that the documentation version you are building is associated with a package version that is either *
+      *already on PyPI** or **is about to be published immediately**.
+
+3. **Accessing the Version Number:** Inside your workflow, you can easily access the semver tag/version number using the
+   `$ {{ github.ref_name }}` or `$ {{ github.event.release.tag_name }}` context variables.
+
+    * For a release tag like `v1.2.3`, `$ {{ github.ref_name }}` would be `v1.2.3`. You can then use shell commands or
+      tools like `sed` or `tr` to strip the leading `v` if necessary to get the plain version (`1.2.3`) for your Sphinx
+      configuration and documentation path (e.g., `_build/html/1.2.3/`).

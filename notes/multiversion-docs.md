@@ -576,3 +576,98 @@ jobs:
     * For a release tag like `v1.2.3`, `$ {{ github.ref_name }}` would be `v1.2.3`. You can then use shell commands or
       tools like `sed` or `tr` to strip the leading `v` if necessary to get the plain version (`1.2.3`) for your Sphinx
       configuration and documentation path (e.g., `_build/html/1.2.3/`).
+
+# An issue with doc.yaml GitHub Actions
+
+What have just happened?
+I had configured my docs.yml GitHub Actions workflow to trigger on creating a new release.
+Sphinx-multiversion is configured to build the documentation for all release tags (x.y.z) and for no branches
+and publish them to GitHub Pages.
+The reason for doing this is that I want to publish the documentation for each version published on PyPI.
+
+Today, when I created a new release, the workflow started, but it failed.
+So I needed to modify the workflow to make it work.
+I changed it to run also on push to main branch, and I let it that way.
+
+Is this a good idea?
+Would this have any repercussions on the documentation published to GitHub Pages?
+What if I do not want to publish the documentation for the main branch?
+What if I do too many pushes to main branch for other reasons that publish the documentation for a new release?
+Should I publish also the documentation for the main branch?
+
+AI suggest to trigger on tag push instead of on release and remove the trigger on push to main.
+
+Ok, I will remove the triger on push to main. But trigger on release or on tag does not solve the issue I had today. 
+If this happens again, meaning i push a tag
+or release, and the documentation build fails, I need to force the documentation workflow again after the relesease or
+the tag push. How should i manage this?
+
+That is a very practical concern. When a workflow is tied strictly to a "one-time event" like a tag push or a release
+creation, you lose the ability to "re-try" the build if you need to fix a bug in the documentation settings themselves.
+
+If you fix a typo in `docs.yml` and push it to `main`, it won't trigger the "Tag" workflow again because the tag already
+exists in the past.
+
+Here are the three best ways to handle this so you are never "stuck" again:
+
+### 1. Add `workflow_dispatch` (The "Manual Trigger")This is the most important fix. By adding `workflow_dispatch` to
+your `on:` section, a **"Run workflow"** button will appear in the GitHub Actions tab. This allows you to manually
+trigger the documentation build whenever you want, using the latest code from `main` (which includes your fixes).
+
+```yaml
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch: # Allows manual triggering from the Actions UI
+
+```
+
+### 2. Use a "Fix" Branch or Force-Push Tags (Not Recommended)Some people delete the tag and re-create it to trigger the
+action again. **Avoid this.** It causes issues for users who have already downloaded that version and breaks the "source
+of truth" for your releases.
+
+### 3. The "Hybrid" Approach (Best for your situation)Since you want to ensure the documentation builds correctly but
+don't want to spam GitHub Pages with every push to `main`, you can use **path filtering**.
+
+Modify your trigger to look like this:
+
+```yaml
+on:
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - main
+    paths:
+      - 'docs/**'       # Only trigger on main if files in docs/ change
+      - 'conf.py'       # Only trigger if Sphinx config changes
+      - '.github/workflows/docs.yml' # Trigger if you fix the workflow itself
+  workflow_dispatch:    # The "emergency" manual button
+
+```
+
+**Why this works:**
+
+* **Normal code pushes** to `main` (fixing a bug in your Python logic) **will not** trigger the documentation build.
+* **Fixing the documentation** (editing the `docs/` folder or the `docs.yml` file) **will** trigger the build on `main`,
+  allowing you to see if your fix worked.
+* **The Manual Button** is there if you just need to force a refresh without changing any code.
+
+---
+
+###How to handle the "build" if it's on `main`If you trigger the build from `main` (either via a manual run or a docs
+fix), `sphinx-multiversion` will still behave exactly as you told it to: it will look at the repo, find all the tags,
+and build them.
+
+Because you have `fetch-depth: 0`, even if the workflow is running on the `main` branch, it can "see" the tags and
+generate the documentation for them.
+
+###Summary of the "Safety Net" Setup1. **Add `workflow_dispatch`:** For manual retries without code changes.
+
+2. **Add `paths` to the `main` trigger:** So the workflow only runs when you are actually working on the documentation.
+3. **Keep `fetch-depth: 0`:** So the runner always knows about your release history, regardless of which branch it's
+   running on.
+
+**Would you like me to show you how to find the "Run workflow" button in the GitHub UI once you've
+added `workflow_dispatch`?**

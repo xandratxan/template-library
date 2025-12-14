@@ -11,7 +11,6 @@ TemplateLibrary
 `Issues <https://github.com/xandratxan/template-library/issues>`_
 
 TemplateLibrary provides a template for a GitHub repository to host a Python library project.
-For now, only the documentation of the latest version is available.
 
 .. grid:: 2
    :gutter: 3

@@ -93,7 +93,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _build/html
+          path: docs/_build/html
 
       # Deploys the uploaded artifact to GitHub Pages using the Pages permission
       - name: Deploy to GitHub Pages

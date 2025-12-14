@@ -5,8 +5,6 @@
 
 import os
 import sys
-from urllib.parse import urljoin
-
 
 # Configuration for finding your package source code (Crucial for `src` layout)
 DOCS_SOURCE_DIR = os.path.dirname(__file__)  # Absolute path to conf.py directory
@@ -49,15 +47,12 @@ html_static_path = ['_static']
 html_baseurl = "https://xandratxan.github.io/template-library/"
 # html_baseurl = "http://0.0.0.0:8000/"
 
-_json_path = "switcher.json"
-json_url = urljoin(html_baseurl, _json_path)
-
 html_title = f'{project}'
 html_theme_options = {
     "show_nav_level": 2,
     "navbar_end": ["version-switcher", "navbar-icon-links"],
     "switcher": {
-        "json_url": json_url,
+        "json_url": "https://xandratxan.github.io/template-library/latest/_static/switcher.json",
         "version_match": release,
     },
     "icon_links": [

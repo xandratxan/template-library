@@ -13,8 +13,6 @@ TemplateLibrary
 TemplateLibrary provides a template for a GitHub repository to host a Python library project.
 For now, only the documentation of the latest version is available.
 
-Dummy text to force docs workflow to run. Dummy text to force docs workflow to run.
-
 .. grid:: 2
    :gutter: 3
    :class-container: sd-text-center

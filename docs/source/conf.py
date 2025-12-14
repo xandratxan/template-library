@@ -5,6 +5,8 @@
 
 import os
 import sys
+from urllib.parse import urljoin
+
 
 # Configuration for finding your package source code (Crucial for `src` layout)
 DOCS_SOURCE_DIR = os.path.dirname(__file__)  # Absolute path to conf.py directory
@@ -27,6 +29,7 @@ extensions = [
     "sphinx_design",
     "sphinx.ext.autosummary",
     "numpydoc",
+    "sphinx_multiversion",
 ]
 
 templates_path = ['_templates']
@@ -39,13 +42,17 @@ autosummary_generate = True
 
 html_theme = 'pydata_sphinx_theme'
 html_static_path = ['_static']
+html_baseurl = "https://xandratxan.github.io/template-library/"
+
+_json_path = "latest/_static/switcher.json"
+json_url = urljoin(html_baseurl, _json_path)
 
 html_title = f'{project}'
 html_theme_options = {
     "show_nav_level": 2,
     "navbar_end": ["version-switcher", "navbar-icon-links"],
     "switcher": {
-        "json_url": "_static/versions.json",  # TODO: Update this path
+        "json_url": json_url,
         "version_match": release,
     },
     "icon_links": [

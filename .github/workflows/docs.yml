@@ -5,6 +5,10 @@ on:
   # Trigger the workflow on new GitHub Release creation
   release:
     types: [ created ]
+  # Also trigger on pushes to the main branch (for testing purposes)
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read  # Allow reading repo contents

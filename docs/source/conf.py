@@ -10,7 +10,6 @@ project = 'TemplateLibrary'
 copyright = '2025, Xandra Campo'
 author = 'Xandra Campo'
 release = f'v0.0.4'
-rst_epilog = f'.. |project_release| replace:: v{release}'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
